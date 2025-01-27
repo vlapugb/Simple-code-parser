@@ -1,0 +1,45 @@
+use crate::ast::{Expr, Stmt};
+use std::str::FromStr;
+
+grammar;
+
+pub ProgramGrammar: Vec<Stmt> = {
+  <statements: Stmt*> => statements
+};
+
+pub Stmt: Stmt = {
+  PrintStatement,
+  AssignStatement
+};
+
+PrintStatement: Stmt = {
+  "print" <expr:Expr> => Stmt::Print(expr),
+};
+
+AssignStatement: Stmt = {
+  "let" <strr:VariableName> "=" <expr:Expr> => Stmt::Assign(strr, expr),
+};
+
+Expr: Expr = {
+  <lhs:Expr> "+" <rhs:Term> => Expr::Add(Box::new(lhs), Box::new(rhs)),
+  Term
+};
+
+Term: Expr = {
+  <lhs:Term> "*" <rhs:Factor> => Expr::Mul(Box::new(lhs), Box::new(rhs)),
+  Factor
+};
+
+Factor: Expr = {
+  NumberLiteral => Expr::Num(<>),
+  VariableName => Expr::Var(<>),
+  "(" <expr:Expr> ")" => Expr::Paren(Box::new(expr)),
+};
+
+NumberLiteral: i8 = {
+  <num_str: r"[0-9]+"> => i8::from_str(num_str).unwrap(),
+};
+
+VariableName: String = {
+  <ident_str: r"[a-z]+"> => ident_str.to_string(),
+};
