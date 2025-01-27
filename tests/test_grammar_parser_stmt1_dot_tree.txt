@@ -1,0 +1,5 @@
+digraph AST {
+node0 [label="Assign(x)"];
+node1 [label="Num(42)"];
+node0 -> node1;
+}

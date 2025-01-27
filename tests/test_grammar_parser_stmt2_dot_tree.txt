@@ -1,0 +1,5 @@
+digraph AST {
+node0 [label="Print"];
+node1 [label="Var(x)"];
+node0 -> node1;
+}
