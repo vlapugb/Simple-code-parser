@@ -1,4 +1,4 @@
-use crate::ast::{Expr, Stmt};
+use crate::modules::ast::{Expr, Stmt};
 use std::fmt::Write;
 
 pub fn to_dot(statements: &[Stmt]) -> String {
@@ -7,9 +7,10 @@ pub fn to_dot(statements: &[Stmt]) -> String {
     writeln!(s, "digraph AST {{").unwrap();
 
     let mut counter = 0;
-
+    let root = new_node("Root", &mut s, &mut counter);
     for stmt in statements {
         let stmt_node = to_dot_stmt(stmt, &mut s, &mut counter);
+        writeln!(s, "{} -> {};", root, stmt_node).unwrap();
     }
 
     writeln!(s, "}}").unwrap();
@@ -63,12 +64,6 @@ fn to_dot_expr(expr: &Expr, s: &mut String, counter: &mut i32) -> String {
         Expr::Var(name) => {
             let label = format!("Var({})", name);
             new_node(&label, s, counter)
-        }
-        Expr::Paren(subexpr) => {
-            let node_name = new_node("Paren", s, counter);
-            let child_node = to_dot_expr(subexpr, s, counter);
-            writeln!(s, "{} -> {};", node_name, child_node).unwrap();
-            node_name
         }
     }
 }
