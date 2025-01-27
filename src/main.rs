@@ -2,7 +2,6 @@ use clap::Parser;
 use std::fs;
 use std::io::Read;
 use std::path::Path;
-use pyo3::prelude::*;
 mod modules;
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
@@ -39,7 +38,7 @@ fn main() {
     match parser.parse(content.as_str()) {
         Ok(stmts) => {
             let dot_tree = to_dot(&stmts);
-            plotting_graphviz(dot_tree.as_str(), "ast.png").expect("Failed to plot graph");
+            plotting_graphviz(dot_tree.as_str(), "AST_graphviz").expect("Failed to plot graph");
             println!("Parsed: {}", dot_tree)
         }
         Err(e) => println!("Error: {:?}", e),

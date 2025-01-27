@@ -1,0 +1,1 @@
+let x = 42+3*5 let y = x+10 let z = (y*3) + (x+2) print z let a = (z+10)*(2+3) let b = (a+(x+3)*z) print b
