@@ -1,10 +1,10 @@
-use crate::ast::{Expr, Stmt};
+use crate::modules::ast::{Expr, Stmt};
 use std::str::FromStr;
 
 grammar;
 
 pub ProgramGrammar: Vec<Stmt> = {
-  <statements: Stmt*> => statements
+  <statements: Stmt+> => statements
 };
 
 pub Stmt: Stmt = {
@@ -33,7 +33,7 @@ Term: Expr = {
 Factor: Expr = {
   NumberLiteral => Expr::Num(<>),
   VariableName => Expr::Var(<>),
-  "(" <expr:Expr> ")" => Expr::Paren(Box::new(expr)),
+  "(" <expr:Expr> ")" => expr,
 };
 
 NumberLiteral: i8 = {
