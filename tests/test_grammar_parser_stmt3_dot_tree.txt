@@ -1,15 +1,15 @@
 digraph AST {
-node0 [label="Assign(z)"];
-node1 [label="Mul"];
-node2 [label="Paren"];
+node0 [label="Root"];
+node1 [label="Assign(z)"];
+node2 [label="Mul"];
 node3 [label="Add"];
 node4 [label="Var(y)"];
 node5 [label="Num(6)"];
 node3 -> node4;
 node3 -> node5;
-node2 -> node3;
 node6 [label="Num(2)"];
+node2 -> node3;
+node2 -> node6;
 node1 -> node2;
-node1 -> node6;
 node0 -> node1;
 }
