@@ -1,38 +1,20 @@
-name: Run Tests and Validate Code
+name: CI
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
   pull_request:
-    branches:
-      - main
+    branches: [ "main" ]
 
 jobs:
-  test:
+  build-and-test:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Install Rust
-        uses: actions-rs/toolchain@v1
+      - uses: actions/checkout@v3
+      - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
           override: true
+      - run: cargo build --verbose
+      - run: cargo test --verbose
 
-      - name: Build project
-        run: cargo build
-
-      - name: Run tests
-        run: cargo test -- --nocapture
-
-  deploy:
-    needs: test
-    if: ${
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: All tests passed
-        run: echo "All tests passed."
